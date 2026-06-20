@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Etyka SWPS — test</title>
+<style>
+:root {
+  --bg1:#fff1f2;
+  --bg2:#f8fafc;
+  --card:#ffffff;
+  --text:#171827;
+  --muted:#6b7280;
+  --primary:#e30613;
+  --primary2:#8b0015;
+  --accent:#ffccd2;
+  --good:#16a34a;
+  --good-bg:#dcfce7;
+  --bad:#dc2626;
+  --bad-bg:#fee2e2;
+  --warn:#f59e0b;
+  --warn-bg:#fffbeb;
+  --border:#e5e7eb;
+  --shadow:0 22px 60px rgba(31,41,55,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(227,6,19,.20), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(139,0,21,.16), transparent 34%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+}
+.app{max-width:1040px;margin:0 auto;padding:28px}
+.hero{
+  min-height:84vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-card{
+  width:100%;
+  max-width:880px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.75);
+  border-radius:32px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.hero-main{padding:54px;text-align:center}
+.kicker{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:8px 12px;
+  border-radius:999px;
+  background:#fee2e2;
+  color:#9f1239;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:.02em;
+}
+h1{
+  font-size:clamp(36px,5vw,64px);
+  line-height:1;
+  margin:22px 0 16px;
+  letter-spacing:-.05em;
+}
+.subtitle{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.55;
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:28px 0;
+}
+.stat{
+  padding:16px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+.stat strong{display:block;font-size:26px;color:#9f1239}
+.stat span{font-size:13px;color:var(--muted)}
+.control-box{
+  margin-top:26px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:end;
+}
+label{font-weight:800;font-size:14px;text-align:left}
+select{
+  display:block;
+  margin-top:8px;
+  min-width:190px;
+  padding:14px 16px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:16px;
+  outline:none;
+}
+button{
+  border:0;
+  border-radius:16px;
+  padding:15px 18px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;
+  font-size:15px;
+  box-shadow:0 12px 30px rgba(227,6,19,.22);
+}
+button.secondary{
+  background:#fff;
+  color:#374151;
+  border:1px solid var(--border);
+  box-shadow:none;
+}
+button.report{
+  background:var(--warn-bg);
+  color:#92400e;
+  border:1px solid #fde68a;
+  box-shadow:none;
+}
+button:disabled{opacity:.55;cursor:not-allowed}
+.screen{display:none}
+.screen.active{display:block}
+.quiz-shell{
+  max-width:860px;
+  margin:26px auto;
+}
+.top-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(255,255,255,.85);
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:800;
+  color:#374151;
+}
+.progress-wrap{
+  width:100%;
+  height:12px;
+  background:rgba(255,255,255,.72);
+  border-radius:999px;
+  overflow:hidden;
+  margin:14px 0 24px;
+  border:1px solid rgba(255,255,255,.75);
+}
+.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.25s}
+.question-card{
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.82);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  padding:32px;
+}
+.source{
+  display:inline-flex;
+  margin-bottom:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#fff1f2;
+  color:#9f1239;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.question-title{
+  font-size:26px;
+  line-height:1.25;
+  letter-spacing:-.02em;
+  margin:0 0 22px;
+}
+.answer{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  width:100%;
+  padding:16px;
+  margin:10px 0;
+  border:2px solid var(--border);
+  background:#fff;
+  border-radius:18px;
+  cursor:pointer;
+  transition:.16s;
+  line-height:1.42;
+}
+.answer:hover{
+  border-color:#fecdd3;
+  transform:translateY(-1px);
+}
+.letter{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:#fff1f2;
+  font-weight:900;
+  color:#9f1239;
+}
+.answer-text{padding-top:6px}
+.answer.correct{
+  border-color:var(--good);
+  background:var(--good-bg);
+}
+.answer.correct .letter{
+  background:var(--good);
+  color:#fff;
+}
+.answer.wrong{
+  border-color:var(--bad);
+  background:var(--bad-bg);
+}
+.answer.wrong .letter{
+  background:var(--bad);
+  color:#fff;
+}
+.answer.locked{cursor:default}
+.feedback{
+  margin-top:18px;
+  padding:16px;
+  border-radius:18px;
+  font-weight:900;
+  display:none;
+}
+.feedback.good{display:block;background:var(--good-bg);color:#166534}
+.feedback.bad{display:block;background:var(--bad-bg);color:#991b1b}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+.left-actions,.right-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.result-card{
+  max-width:760px;
+  margin:40px auto;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:32px;
+  box-shadow:var(--shadow);
+  padding:42px;
+  text-align:center;
+}
+.result-score{
+  font-size:64px;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+  margin:12px 0;
+  color:#9f1239;
+}
+.result-percent{
+  display:inline-flex;
+  padding:10px 16px;
+  border-radius:999px;
+  background:#fee2e2;
+  color:#9f1239;
+  font-weight:900;
+}
+.review{
+  text-align:left;
+  margin-top:26px;
+  max-height:330px;
+  overflow:auto;
+  border-top:1px solid var(--border);
+  padding-top:16px;
+}
+.review-item{
+  padding:12px 0;
+  border-bottom:1px solid #f1f5f9;
+}
+.review-item b{display:block;margin-bottom:4px}
+.ok{color:var(--good);font-weight:900}
+.no{color:var(--bad);font-weight:900}
+@media(max-width:820px){
+  .app{padding:16px}
+  .hero-main{padding:30px 22px}
+  .stat-grid{grid-template-columns:1fr}
+  .question-card{padding:22px}
+  .question-title{font-size:21px}
+  .top-nav{align-items:flex-start;flex-direction:column}
+  .actions{flex-direction:column}
+  .left-actions,.right-actions{width:100%}
+  .left-actions button,.right-actions button{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="startScreen" class="screen active hero">
+  <div class="hero-card">
+    <div class="hero-main">
+      <h1>Etyka w zastosowaniach psychologii</h1>
+      <p class="subtitle">Jeśli znajdziesz błędne pytanie, zgłoś je za pomocą przycisku „Zgłoś pytanie”.</p>
+
+      <div class="stat-grid">
+        <div class="stat"><strong id="statQuestions">0</strong><span>pytań w bazie</span></div>
+        <div class="stat"><strong>1</strong><span>poprawna odpowiedź</span></div>
+        <div class="stat"><strong>∞</strong><span>losowych podejść</span></div>
+      </div>
+
+      <div class="control-box">
+        <label>Ile pytań chcesz?
+          <select id="count"></select>
+        </label>
+        <button onclick="startQuiz()">Rozpocznij test</button>
+        <button class="secondary" onclick="quickAll()">Cała baza</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quizScreen" class="screen">
+  <div class="quiz-shell">
+    <div class="top-nav">
+      <div>
+        <span class="pill" id="counterPill">Pytanie 1 / 1</span>
+        <span class="pill" id="scorePill">Wynik: 0</span>
+      </div>
+      <button class="secondary" onclick="backHome()">Zakończ</button>
+    </div>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="question-card" id="questionCard"></div>
+  </div>
+</section>
+
+<section id="resultScreen" class="screen">
+  <div class="result-card">
+    <span class="kicker">WYNIK KOŃCOWY</span>
+    <div class="result-score" id="finalScore">0 / 0</div>
+    <div class="result-percent" id="finalPercent">0%</div>
+    <p class="subtitle" id="resultText" style="margin-left:auto;margin-right:auto"></p>
+    <div>
+      <button onclick="startQuiz()">Jeszcze raz</button>
+      <button class="secondary" onclick="backHome()">Wróć do startu</button>
+    </div>
+    <div class="review" id="reviewBox"></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+const DATA = [{"q": "Pierwszym kodeksem etyki zawodowej psychologa był:", "source": "plik Word", "answers": [{"text": "Kodeks etyki zawodowej Association of State and Provincial Psychology Boards", "correct": false}, {"text": "Kodeks etyki zawodowej Polskiego Towarzystwa Psychologicznego", "correct": false}, {"text": "Kodeks etyczno-zawodowy Brytyjskiego Towarzystwa Psychologicznego", "correct": false}, {"text": "Kodeks etyki zawodowej Amerykańskiego Towarzystwa Psychologicznego", "correct": true}]}, {"q": "Naczelne wartości zawodu psychologa w Polsce definiuje:", "source": "plik Word", "answers": [{"text": "Kodeks etyczny psychologa z 2018 roku", "correct": true}, {"text": "Ustawa o zawodzie psychoterapeuty z 2023 roku", "correct": false}, {"text": "Ustawa o zawodzie psychologa i samorządzie zawodowym psychologów z 2001 roku", "correct": false}, {"text": "Żaden z powyższych dokumentów", "correct": false}]}, {"q": "W Polsce osoba, która otrzymuje dyplom magistra psychologii:", "source": "plik Word", "answers": [{"text": "zostaje wpisana na listę psychologów Regionalnej Izby Psychologów", "correct": false}, {"text": "odbywa obowiązkowy roczny staż zawodowy, pod merytorycznym nadzorem psychologa posiadającego prawo wykonywania zawodu", "correct": false}, {"text": "staje się członkiem samorządu zawodowego psychologów właściwego ze względu na miejsce zamieszkania", "correct": false}, {"text": "żadna z powyższych odpowiedzi nie jest poprawna", "correct": true}]}, {"q": "Prawo wykonywania zawodu psychologa w Polsce:", "source": "plik Word", "answers": [{"text": "powstaje z chwilą dokonania wpisu na listę psychologów prowadzoną przez Regionalną Izbę Psychologów", "correct": false}, {"text": "przysługuje osobie, która łącznie spełnia następujące warunki: uzyskała dyplom magistra psychologii, posiada pełną zdolność do czynności prawnych, włada językiem polskim w mowie i piśmie w zakresie koniecznym do wykonywania zawodu psychologa, odbyła podyplomowy staż zawodowy", "correct": false}, {"text": "dotyczy jedynie osób, które uzyskały rekomendację do przeprowadzenia procedury wpisu na listę, w rezultacie czego inne osoby nie mogą uzyskać potwierdzenia prawa wykonywania zawodu", "correct": false}, {"text": "odpowiedzi a i b są poprawne", "correct": true}]}, {"q": "Zgodnie z kodeksem etycznym psychologa:", "source": "plik Word", "answers": [{"text": "tajemnica zawodowa może zostać uchylona jeśli istnieje poważne zagrożenie życia lub zdrowia osób lub jeśli tak stanowią przepisy prawa powszechnego", "correct": false}, {"text": "tajemnica zawodowa może zostać uchylona na mocy zwolnienia przez Sąd obowiązku jej zachowania w procesie cywilnym", "correct": false}, {"text": "tajemnica zawodowa nie może zostać uchylona w żadnym przypadku", "correct": false}, {"text": "odpowiedzi a i b są prawidłowe", "correct": true}]}, {"q": "Zgodnie z kodeksem postępowania karnego:", "source": "plik Word", "answers": [{"text": "Sąd może dla dobra wymiaru sprawiedliwości zwolnić psychologa z obowiązku zachowania tajemnicy zawodowej", "correct": false}, {"text": "Prokurator może dla dobra wymiaru sprawiedliwości zwolnić psychologa z obowiązku zachowania tajemnicy zawodowej", "correct": false}, {"text": "Psycholog może odmówić zeznań co do okoliczności, na które rozciąga się obowiązek zachowania tajemnicy zawodowej", "correct": false}, {"text": "Wszystkie powyższe odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Psycholog podejmując decyzję odnośnie odstąpienia od tajemnicy zawodowej:", "source": "plik Word", "answers": [{"text": "powinien skonsultować ją z innym psychologiem, doświadczonym i bezstronnym", "correct": false}, {"text": "powinien omówić szczegółowo swoją decyzję z Klientem", "correct": false}, {"text": "ze względu na wartość zdrowia i życia może podjąć tę decyzję bez zgody Klienta", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są prawidłowe", "correct": true}]}, {"q": "W przypadku naruszenia przez psychologa obowiązku zachowania tajemnicy zawodowej:", "source": "plik Word", "answers": [{"text": "pokrzywdzony Klient może złożyć zawiadomienie do prokuratury o przestępstwie i wniosek o ściganie", "correct": true}, {"text": "pokrzywdzonemu klientowi nie przysługuje prawo do dochodzenia odszkodowania z tytułu poniesionych strat za naruszenie dóbr osobistych", "correct": false}, {"text": "psycholog podlega grzywnie, karze ograniczenia wolności albo pozbawienia wolności do lat 4", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są prawidłowe", "correct": false}]}, {"q": "W przypadku świadczenia usługi psychologicznej na rzecz osób z ograniczoną zdolnością do czynności prawnych psycholog ma obowiązek:", "source": "plik Word", "answers": [{"text": "w zrozumiały sposób wyjaśnić procedury i cel usługi", "correct": false}, {"text": "uzyskać na piśmie zgodę od prawnych opiekunów", "correct": false}, {"text": "poszukiwać przyzwolenia na realizację usługi u osoby z ograniczoną zdolnością do czynności", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Czy w Polsce psycholog jest uznawany za zawód zaufania publicznego", "source": "plik Word", "answers": [{"text": "Tak - w Polsce zawód psychologa jest zawodem zaufania publicznego", "correct": true}, {"text": "Nie - ponieważ przepisy ustawy o zawodzie psychologa i samorządzie zawodowym psychologów o tym mówią, ale jest tzw. „przepisem martwym”", "correct": false}, {"text": "Nie - ponieważ w Polsce nie funkcjonuje samorząd zawodowy psychologów", "correct": false}, {"text": "Nie - ponieważ w Polsce psycholog może być zwolniony z tajemnicy zawodowej", "correct": false}]}, {"q": "Propozycje niektórych zapisów do uwzględnienia przy przygotowywaniu nowelizacji lub nowego projektu ustawy o zawodzie psychologa i samorządzie zawodowym psychologów z 2015 roku, zawierały m.in.:", "source": "plik Word", "answers": [{"text": "Uwzględnienia definicji świadczeń psychologicznych", "correct": false}, {"text": "wskazanie czasu przechowywania dokumentacji psychologicznej przez okres 10 lat od zakończenia relacji z klientem", "correct": false}, {"text": "zawierania katalogu kar za zawinione naruszenie zasad zawodowych lub zasad etyki określonej w Kodeksie Etyki Zawodowej", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są poprawne", "correct": true}]}, {"q": "Pięć podstawowych zasad etycznych w pracy psychologa to:", "source": "plik Word", "answers": [{"text": "Działanie na rzecz dobra klienta i nie szkodzenie mu; Odpowiedzialność zawodowa; Sprawiedliwość; Przestrzeganie tajemnicy zawodowej; Chronienie dobra jednostki o szczególnym charakterze", "correct": false}, {"text": "Respektowanie praw człowieka i jego godności; Działanie na rzecz dobra klienta i nie szkodzenie mu; Integralność; Odpowiedzialność zawodowa; Sprawiedliwość", "correct": true}, {"text": "Odpowiedzialność zawodowa, Działanie na rzecz dobra klienta i nie szkodzenie mu, Chronienie dobra jednostki o szczególnym charakterze, Osobiste i samodzielne wykonywanie zawodu; Należyte wykonywanie zawodu psychologa w granicach interesu publicznego i dla jego ochrony", "correct": false}, {"text": "Odpowiedzialność zawodowa, Działanie na rzecz dobra klienta i nie szkodzenie mu; Osobiste i samodzielne wykonywanie zawodu; Psychoedukacja zgodnie z aktualną wiedzą, Sprawiedliwość", "correct": false}]}, {"q": "Zasada etyczna w pracy psychologa „Odpowiedzialność zawodowa” mówi m.in. o tym, że:", "source": "plik Word", "answers": [{"text": "relacja z Klientem oparta jest na zaufaniu, a psycholog powinien wykazywać wrażliwość na odstępstwa innych psychologów od standardów zawodowych czy etycznych oraz unikać konfliktu ról społecznych", "correct": true}, {"text": "psycholog powinien dbać o własną kondycję psychiczną i fizyczną, stale doskonalić swoje kompetencje oraz tworzyć zespoły interdyscyplinarne", "correct": false}, {"text": "psycholog powinien stosować sprawdzone, naukowo uzasadnione metody diagnozy, poddawać refleksji własny system wartości oraz rzetelnie i precyzyjnie przedstawiać swoje kwalifikacje", "correct": false}, {"text": "odpowiedzi a i b są poprawne", "correct": false}]}, {"q": "Ustawa o zawodzie psychologa i samorządzie zawodowym psychologów stanowi, że zgoda na usługę psychologiczną nie jest wymagana:", "source": "plik Word", "answers": [{"text": "w przypadkach określonych w przepisach Kodeksu karnego, Kodeksu postępowania karnego oraz w ustawie z dnia 19 sierpnia 1994 r. o ochronie zdrowia psychicznego", "correct": true}, {"text": "w stosunku do kandydatów kierowanych do służby w Policji", "correct": false}, {"text": "w stosunku do kandydatów na strażników miejskich", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są poprawne", "correct": false}]}, {"q": "Kto jest Klientem w usługach psychologicznych świadczonych na rzecz dzieci:", "source": "plik Word", "answers": [{"text": "Dziecko", "correct": false}, {"text": "Rodzic/Opiekun prawny", "correct": false}, {"text": "Klientem-zleceniodawcą jest rodzic/opiekun prawny, a klientem-podmiotem oddziaływań jest dziecko", "correct": true}, {"text": "Dziecko lub Rodzic/Opiekun prawny w zależności od ustaleń dokonanych z rodzicami/opiekunami prawnymi", "correct": false}]}, {"q": "Psycholog jest zobowiązany do zachowania tajemnicy zawodowej zgodnie z zapisami zawartymi w:", "source": "plik Word", "answers": [{"text": "Kodeksie etycznym psychologa z 2018 roku", "correct": false}, {"text": "Ustawie o zawodzie psychoterapeuty z 2023 roku", "correct": false}, {"text": "Ustawie o zawodzie psychologa i samorządzie zawodowym psychologów z 2001 roku", "correct": false}, {"text": "odpowiedzi a i c są prawidłowe", "correct": true}]}, {"q": "Zachowanie tajemnicy zawodowej przez psychologa:", "source": "plik Word", "answers": [{"text": "nie może być ograniczone w czasie", "correct": false}, {"text": "obowiązuje również po śmierci odbiorcy", "correct": false}, {"text": "obowiązuje również po śmierci psychologa", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Zasada etyczna „Działanie na rzecz dobra klienta i nie szkodzenie mu”:", "source": "plik Word", "answers": [{"text": "obowiązuje tylko w zawodzie psychologa i lekarza", "correct": false}, {"text": "obowiązuje tylko w zawodzie psychologa, lekarza i lekarza dentysty", "correct": false}, {"text": "obowiązuje we wszystkich zawodach zaufania publicznego", "correct": true}, {"text": "żadna z powyższych odpowiedzi nie jest prawidłowa", "correct": false}]}, {"q": "Zasady i warunki wykonywania zawodu psychologa określa ustawa o zawodzie psychologa i samorządzie zawodowym psychologów z dnia:", "source": "plik Word", "answers": [{"text": "8 czerwca 2001 roku", "correct": false}, {"text": "2 lipca 2007 roku", "correct": false}, {"text": "14 września 2015 roku", "correct": false}, {"text": "23 stycznia 2026 r. — ustawa o zawodzie psychologa oraz samorządzie zawodowym psychologów.", "correct": true}]}, {"q": "Zgodnie z kodeksem karnym psycholog, który ujawnił informację dotyczącą klienta, z którą zapoznał się w trakcie wykonywania swojej pracy", "source": "plik Word", "answers": [{"text": "podlega grzywnie, karze ograniczenia wolności albo pozbawienia wolności do lat 3", "correct": false}, {"text": "podlega grzywnie, karze ograniczenia wolności albo pozbawienia wolności do lat 2", "correct": true}, {"text": "musi wypłacić klientowi odszkodowanie z tytułu poniesionych strat", "correct": false}, {"text": "odpowiedzi b i c są poprawne", "correct": false}]}, {"q": "Dobre praktyki w pracy psychologa szkolnego zgodne z zasadami etyki zawodu to np.:", "source": "plik Word", "answers": [{"text": "Świadomość braku odpowiedzialności za pomoc psychologiczną w szkole wraz ze wszystkimi tego konsekwencjami — przełożony (Dyrektor szkoły, poradni psych-ped.) jest osobą odpowiedzialną", "correct": false}, {"text": "Współpraca z PPP i korzystanie z wsparcia np. grup superwizyjnych", "correct": true}, {"text": "Dbanie o relacje prywatne wśród nauczycieli, nawet jeśli wchodzi w konflikt z zasadami etyki zawodu", "correct": false}, {"text": "Nieodmawianie realizacji zadań służbowych, nawet jeśli wchodzą w konflikt z zasadami etyki zawodu psychologa", "correct": false}]}, {"q": "Jeśli jako psycholog na zlecenie organu procesowego sporządzasz opinię sądowo-psychologiczną dotyczącą osoby z zaburzeniami psychicznymi, mając wiedzę o popełnieniu przez nią przestępstwa:", "source": "plik Word", "answers": [{"text": "Musisz uwzględnić tę informację", "correct": false}, {"text": "Nie możesz uwzględnić tej informacji", "correct": false}, {"text": "Możesz uwzględnić tę informację", "correct": true}, {"text": "Możesz uwzględnić tę informację, ale tylko za zgodą badanego", "correct": false}]}, {"q": "Czy z punktu widzenia etyki zawodu psychologa psycholog szkolny może być jednocześnie nauczycielem języka angielskiego wobec tego samego ucznia", "source": "plik Word", "answers": [{"text": "Nie — pełnienie tych funkcji w tym samym czasie rodzi ryzyko konfliktu ról", "correct": true}, {"text": "Jeśli wymaga tego realizacja pensum nie ma takich przeszkód", "correct": false}, {"text": "Jeśli w roli nauczyciela ma odpowiednie kwalifikacje to nie ma przeszkód", "correct": false}, {"text": "Jeśli w roli psychologa ma odpowiednie kwalifikacje to nie ma przeszkód", "correct": false}]}, {"q": "Psychologa obowiązuje tajemnica zawodowa:", "source": "plik Word", "answers": [{"text": "Do momentu zakończenia pracy z klientem", "correct": false}, {"text": "Przez 10 lat od momentu zakończenia pracy z klientem", "correct": false}, {"text": "Do momentu śmierci klienta", "correct": false}, {"text": "Żadna odpowiedź nie jest poprawna — obowiązek nie jest ograniczony w czasie", "correct": true}]}, {"q": "Psycholog powinien dokładnie omówić i wyjaśnić planowane działania pomocowe, zanim podejmie je — tak brzmi zasada:", "source": "plik Word", "answers": [{"text": "Prywatności", "correct": false}, {"text": "Poufności", "correct": false}, {"text": "Dobrowolności", "correct": true}, {"text": "Bezpieczeństwa", "correct": false}]}, {"q": "Jeśli psycholog planuje przeprowadzić badanie diagnostyczne, to powinien badanemu udzielić informacji o:", "source": "plik Word", "answers": [{"text": "celu diagnozy i przebiegu badania", "correct": true}, {"text": "swoich kwalifikacjach i zainteresowaniach pozazawodowych", "correct": false}, {"text": "sposobie, w jaki wyprowadza wnioski z poszczególnych danych", "correct": false}, {"text": "wszystkie odpowiedzi są poprawne", "correct": false}]}, {"q": "Zgodnie z ustawą o zawodzie psychologa i samorządzie zawodowym psychologów, członkowie samorządu podlegają odpowiedzialności dyscyplinarnej za:", "source": "plik Word", "answers": [{"text": "naruszenie obowiązków zawodowych", "correct": false}, {"text": "niestosowanie się do zapisów kodeksu etyki zawodowej", "correct": false}, {"text": "nieopłacanie składek członkowskich", "correct": false}, {"text": "wszystkie odpowiedzi są poprawne", "correct": true}]}, {"q": "Zasada etyczna, która mówi o tym, że psycholog powinien stosować sprawdzone, naukowo uzasadnione metody pracy, poddawać refleksji własny system wartości, odpowiedzialnie występować w mediach oraz przestrzegać zasad etycznych także w życiu prywatnym, to:", "source": "plik Word", "answers": [{"text": "zasada integralności i uczciwości zawodowej", "correct": true}, {"text": "zasada odpowiedzialności zawodowej", "correct": false}, {"text": "zasada respektowania praw człowieka i poszanowania jego godności", "correct": false}, {"text": "żadna z powyższych odpowiedzi nie jest prawidłowa", "correct": false}]}, {"q": "Jedna z głównych zasad w etyce zawodu psychologa – zasada minimalizacji wtargnięcia polega na tym, że:", "source": "plik Word", "answers": [{"text": "Osoba korzystająca z pomocy psychologa ma prawo do własnych decyzji, własnych błędów i własnego systemu wartości", "correct": false}, {"text": "Psycholog poznaje tylko te aspekty funkcjonowania osoby, które są niezbędne względem uzgodnionego celu", "correct": true}, {"text": "Psycholog poddaje refleksji własny system wartości i sprawdza czy dzielenie się nim nie zniekształca relacji z osobą, z którą pracuje", "correct": false}, {"text": "odpowiedzi b i c są poprawne", "correct": false}]}, {"q": "Psycholog może zostać zwolniony z tajemnicy zawodowej tylko na żądanie:", "source": "plik Word", "answers": [{"text": "sądu lub prokuratora tylko w formie pisemnej", "correct": false}, {"text": "sądu lub prokuratora, a zwolnienie może mieć formę ustną", "correct": true}, {"text": "sądu i tylko w formie pisemnej", "correct": false}, {"text": "prokuratora i tylko w formie pisemnej", "correct": false}]}, {"q": "Działania psychologiczne zleca:", "source": "plik Word", "answers": [{"text": "odbiorca tych działań, czyli klient", "correct": false}, {"text": "osoba do tego upoważniona (w przypadkach małoletnich)", "correct": false}, {"text": "odpowiedzi a i b są poprawne", "correct": true}, {"text": "żadna z odpowiedzi nie jest poprawna", "correct": false}]}, {"q": "Prowadząc konsultację psychologiczną, dowiadujesz się, że Twój dorosły klient w przeszłości był ofiarą zgwałcenia, którego sprawcą był były partner, z którym aktualnie nie ma żadnych kontaktów:", "source": "plik Word", "answers": [{"text": "masz etyczny obowiązek poinformować organy ścigania o dokonaniu przestępstwa i ze względu na wolność sumienia natychmiast wywiązujesz się z tego obowiązku", "correct": false}, {"text": "ze względu na społeczny obowiązek denuncjacji wskazany w art 304 kpk natychmiast informujesz organy ścigania o dokonaniu przestępstwa", "correct": false}, {"text": "ze względu na prawny obowiązek denuncjacji wskazany w art 240 kk natychmiast informujesz organy ścigania o dokonaniu przestępstwa", "correct": false}, {"text": "żadna odpowiedź nie jest poprawna", "correct": true}]}, {"q": "Prowadząc konsultację psychologiczną dla rodzin, zaczynasz podejrzewać, że jedno z dzieci doświadcza przemocy fizycznej i psychicznej ze strony drugiego:", "source": "plik Word", "answers": [{"text": "natychmiast zawiadamiasz prokuraturę zgodnie ze społecznym obowiązkiem denuncjaci", "correct": false}, {"text": "natychmiast zawiadamiasz prokuraturę zgodnie z ustawą o przeciwdziałaniu przemocy w rodzinie", "correct": true}, {"text": "natychmiast zawiadamiasz policję i przygotowujesz pismo do prokuratury", "correct": false}, {"text": "nie podejmujesz żadnych działań związanych z uchyleniem tajemnicy zawodowej, dopóki nie skonsultujesz się z innym psychologiem lub superwizorem", "correct": false}]}, {"q": "Jako psycholog prowadzisz terapię małżeńską. Wiesz, że mąż jest niewierny. Żona wnosi pozew o rozwód. Sąd z inicjatywy żony wzywa cię na świadka", "source": "plik Word", "answers": [{"text": "stawiasz się na rozprawie", "correct": false}, {"text": "informujesz sąd o wiążącej cię tajemnicy zawodowej", "correct": false}, {"text": "odmawiasz odpowiedzi na pytania naruszające istotną tajemnicę zawodową", "correct": false}, {"text": "wszystkie odpowiedzi są poprawne", "correct": true}]}, {"q": "Działania psychologa szkolnego wobec ucznia:", "source": "plik Word", "answers": [{"text": "są objęte tajemnicą zawodową i każdorazowo to on decyduje w zakresie przekazywanych informacji", "correct": true}, {"text": "są dostępne np. w dzienniku elektronicznym w celu szybkiej i sprawnej możliwości przekazania dowolnemu nauczycielowi", "correct": false}, {"text": "powinny być raportowane pod koniec dnia osobom zarządzającym szkołą ze wszystkimi szczegółowymi informacjami", "correct": false}, {"text": "nie są podejmowane bez zgody rodziców ucznia w przypadku zagrożenia zdrowia i życia ucznia", "correct": false}]}, {"q": "Zasada, która mówi o tym, że psycholog weryfikując, co będzie działaniem dla dobra osoby, z którą pracuje, sprawdza trzy obszary: system wartości, sytuację życiową oraz możliwości osoby, nazywana jest:", "source": "plik Word", "answers": [{"text": "zasadą minimalizacją cierpienia", "correct": false}, {"text": "zasadą minimalizacji wtargnięcia", "correct": false}, {"text": "zasadą wewnętrznego układu odniesienia", "correct": true}, {"text": "żadna z powyższych odpowiedzi nie jest prawidłowa", "correct": false}]}, {"q": "W sytuacji, kiedy psycholog będzie świadczył usługę psychologiczną na rzecz osoby, która ukończyła miesiąc wcześniej 17 lat:", "source": "plik Word", "answers": [{"text": "wystarczy, że pozyska świadomą zgodę (pisemną) od tej osoby", "correct": false}, {"text": "wystarczy, że pozyska świadomą zgodę (ustną) od tej osoby", "correct": false}, {"text": "wystarczy, że pozyska świadomą zgodę (pisemną) od prawnych opiekunów", "correct": false}, {"text": "powinien pozyskać świadomą zgodę (pisemną) od prawnych opiekunów oraz przyzwolenie na realizację badania od tej osoby", "correct": true}]}, {"q": "Czy w przypadku badania realizowanego na zlecenie strony trzeciej psycholog może przekazać instytucji zlecającej badanie wydrukowane wyniki surowe (liczbowe) uzyskane w testach przez osobę badaną:", "source": "plik Word", "answers": [{"text": "Tak, jest to powszechnie stosowana i dopuszczalna praktyka", "correct": false}, {"text": "Tak, ale tylko w przypadku badań realizowanych na zlecenie wymiaru sprawiedliwości", "correct": false}, {"text": "Tak, ale wyłącznie za zgodą osoby badanej", "correct": false}, {"text": "Nie, byłoby to naruszenie ważnej zasady etycznej obowiązującej w procesie badań diagnostycznych", "correct": true}]}, {"q": "Zasada podmiotowego traktowania osoby badanej w usłudze psychologicznej realizowanej na zlecenie strony trzeciej polega na tym, że:", "source": "plik Word", "answers": [{"text": "Psycholog realizuje badanie tylko i wyłącznie po wcześniejszym uzyskaniu świadomej zgody na realizację badania od osoby badanej", "correct": false}, {"text": "Psycholog poszukuje przyzwolenia na realizację badania, wyjaśnia osobie badanej procedury i w miarę możliwości udziela jej informacji zwrotnej", "correct": true}, {"text": "Psycholog informuje stronę trzecią zlecającą badanie o prawach osoby badanej i zasadach etycznych obowiązujących w usługach psychologicznych realizowanych na zlecenie strony trzeciej", "correct": false}, {"text": "Żadna z powyższych odpowiedzi nie jest poprawna", "correct": false}]}, {"q": "Informacje uzyskane przez psychologa w związku z wykonywaniem przez niego czynności zawodowych:", "source": "plik Word", "answers": [{"text": "są danymi wrażliwymi", "correct": false}, {"text": "są objęte tajemnicą zawodową", "correct": false}, {"text": "ujawnione przez psychologa – podlegają grzywnie, karze ograniczenia wolności albo pozbawienia wolności", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są poprawne", "correct": true}]}, {"q": "Do psychologa zgłosił się dorosły klient, który wymaga diagnozy psychologicznej w obszarze, w którym psycholog się nie zna. Co powinien zrobić", "source": "plik Word", "answers": [{"text": "przekierować klienta do innego psychologa, który posiada odpowiednie kompetencje", "correct": true}, {"text": "kontynuować proces diagnostyczny, na bieżąco ucząc się tego, czego nie potrafi, ale nie poddając tego superwizji", "correct": false}, {"text": "spróbować przekonać klienta, aby wykonać diagnozę psychologiczną w obszarze, na którym się zna", "correct": false}, {"text": "natychmiast zakończyć proces diagnostyczny", "correct": false}]}, {"q": "Zaznacz zdanie nieprawdziwe na temat etycznej postawy psychologa-praktyka w pracy z osobami dorosłymi:", "source": "plik Word", "answers": [{"text": "psycholog powinien ciągle reflektować niesymetryczność relacji z klientem", "correct": false}, {"text": "psycholog powinien stawiać bardzo sztywne granice w relacji z klientem", "correct": true}, {"text": "psycholog powinien dbać o własny dobrostan psychofizyczny, jednocześnie mając na uwadze dobro klienta", "correct": false}, {"text": "psycholog powinien uzyskiwać w miarę możliwości świadomą zgodę od klienta na prowadzenie różnych działań psychologicznych", "correct": false}]}, {"q": "Które z poniższych zasad udzielania informacji zwrotnej w zakresie diagnozy psychologicznej jest dyskusyjne", "source": "plik Word", "answers": [{"text": "unikanie etykiet", "correct": false}, {"text": "stosowanie profesjonalnego, ale zrozumiałego języka", "correct": false}, {"text": "nieumieszczanie wyników liczbowych", "correct": true}, {"text": "oddzielanie opisu perspektywy pacjenta od faktów i opinii psychologa", "correct": false}]}, {"q": "Psycholog powinien odmówić przeprowadzenia diagnozy psychologicznej, jeśli:", "source": "plik Word", "answers": [{"text": "nie uczestniczy w danym momencie w superwizji", "correct": false}, {"text": "diagnoza wymaga użycia kilku narzędzi diagnostycznych", "correct": false}, {"text": "pracuje z osobą spoza naszej kultury", "correct": false}, {"text": "na pytanie diagnostyczne nie da się odpowiedzieć zgodnie z aktualną wiedzą psychologiczną", "correct": true}]}, {"q": "W przypadku osób niepełnoletnich sytuacja zagrożenia życia i zdrowia powoduje konieczność powiadomienia:", "source": "plik Word", "answers": [{"text": "jego rodziców, ale za zgodą niepełnoletniego", "correct": false}, {"text": "wychowawcę i rodziców", "correct": false}, {"text": "jednego z rodziców", "correct": false}, {"text": "opiekunów prawnych", "correct": true}]}, {"q": "Prawo klienta do odmowy odpowiedzi na konkretne pytanie lub odmowy wykonania konkretnego zadania testu to prawo do:", "source": "plik Word", "answers": [{"text": "prawo do poufności", "correct": false}, {"text": "prawo do wyboru", "correct": true}, {"text": "prawo do prywatności", "correct": false}, {"text": "prawo do godności", "correct": false}]}, {"q": "Opinię diagnostyczną wydaje się – zaznacz prawdziwe stwierdzenie:", "source": "plik Word", "answers": [{"text": "od 16. roku życia małoletniemu i rodzicom", "correct": true}, {"text": "od 17. roku życia małoletniemu i rodzicom", "correct": false}, {"text": "od 16. roku życia tylko małoletniemu", "correct": false}, {"text": "tylko rodzicom małoletniego", "correct": false}]}, {"q": "Prawidłowe udzielanie informacji zwrotnych klientowi przez psychologa wpisuje się w prawo klienta do:", "source": "plik Word", "answers": [{"text": "podmiotowości", "correct": true}, {"text": "poufności", "correct": false}, {"text": "prywatności", "correct": false}, {"text": "godności", "correct": false}]}, {"q": "Dialog międzykulturowy w organizacji ułatwia:", "source": "plik Word", "answers": [{"text": "moralność na poziomie przedkonwencjonalnym", "correct": false}, {"text": "stosowanie zasad tzw. moralnego odcinania", "correct": false}, {"text": "wysokie nasilenie kolektywnego narcyzmu w zespole", "correct": false}, {"text": "stosowanie tzw. złotej reguły", "correct": true}]}, {"q": "Kolektywny narcyzm:", "source": "plik Word", "answers": [{"text": "jest korzystny dla organizacji, bo pracownicy bardziej dbają wzajemnie o siebie", "correct": false}, {"text": "jest korzystny dla organizacji, gdyż wiąże się z otwartością na krytykę", "correct": false}, {"text": "jest niekorzystny dla organizacji, ponieważ wiąże się z nieadekwatnie wyidealizowanym obrazem własnej grupy", "correct": true}, {"text": "wszystkie pozostałe odpowiedzi są nieprawdziwe", "correct": false}]}, {"q": "Psycholog dowiaduje się, że jego klient, osoba ze zdiagnozowanym zaburzeniem psychicznym, jest sprawcą przemocy domowej. W tej sytuacji psycholog:", "source": "plik Word", "answers": [{"text": "powinien niezwłocznie powiadomić organy ścigania, np. policję", "correct": false}, {"text": "powinien skonsultować się z np. superwizorem zanim złamie tajemnicę zawodową", "correct": true}, {"text": "nie może złamać tajemnicy zawodowej ze względu na ustawę o ochronie zdrowia psychicznego", "correct": false}, {"text": "powinien niezwłocznie powiadomić ofiary", "correct": false}]}, {"q": "Zasada minimalizacji wtargnięcia dotyczy:", "source": "plik Word", "answers": [{"text": "minimalizowania krzywdy klienta", "correct": false}, {"text": "minimalizowania przekazywania informacji o kliencie instytucji zlecającej usługę psychologiczną", "correct": false}, {"text": "zadawania klientowi pytań jedynie zleconych przez instytucję", "correct": false}, {"text": "zadawania klientowi pytań jedynie związanych z celami pomocy psychologicznej", "correct": true}]}, {"q": "Przez odpowiedzialne postępowanie w sytuacji złożoności ról rozumiemy:", "source": "plik Word", "answers": [{"text": "niepodejmowanie dodatkowych zadań w przypadku wielości podejmowanych przez psychologa ról w miejscu pracy", "correct": false}, {"text": "niepodejmowanie usługi psychologicznej w sytuacji, gdy psycholog jest z klientem w relacji zawodowej i jednocześnie relacji przyjacielskiej", "correct": true}, {"text": "niepodejmowanie zadań, które są niezgodne z zawodem psychologa", "correct": false}, {"text": "niepodejmowanie zadań, które wykraczają poza kompetencje psychologa", "correct": false}]}, {"q": "Wymiana barterowa oznacza:", "source": "plik Word", "answers": [{"text": "bezgotówkowe oferowanie usługi psychologicznej w zamian za inną usługę lub dobro", "correct": true}, {"text": "świadczenie usługi psychologicznej bez pobierania za to gotówki", "correct": false}, {"text": "bezgotówkowe oferowanie usługi psychologicznej w ramach praktyki studenckiej", "correct": false}, {"text": "bezgotówkowe oferowanie pomocy psychologicznej w ramach wzajemnej pomocy koleżeńskiej", "correct": false}]}, {"q": "Jeśli psycholog zauważa, że inny psycholog postępuje niezgodnie z zasadami kodeksu etyki zawodowej:", "source": "plik Word", "answers": [{"text": "powinien ostrzec o tym klienta owego psychologa", "correct": false}, {"text": "powinien powiadomić pracodawcę tego psychologa", "correct": false}, {"text": "powinien najpierw nieformalnie porozmawiać i upomnieć tego psychologa, jeśli to nie skutkuje – powinien skontaktować się z określoną komisją etyczną", "correct": true}, {"text": "powinien złożyć skargę w Izbie Psychologów", "correct": false}]}, {"q": "Jeśli pracodawca zleca psychologowi diagnozowanie klientów określonymi metodami, które są powszechnie stosowane, ale nie są wiarygodne pod względem psychometrycznym:", "source": "plik Word", "answers": [{"text": "psycholog odmawia stosowania takich metod", "correct": true}, {"text": "psycholog przeprowadza badanie, uprzedzając klientów o wadach metody", "correct": false}, {"text": "psycholog dostosowuje się do zaleceń swojego pracodawcy jako osoby odpowiedzialnej", "correct": false}, {"text": "psycholog przeprowadza badanie, skoro metody są powszechnie stosowane", "correct": false}]}, {"q": "Psycholog, przeprowadzając diagnozę dziecka 8-letniego, zauważa, że nie chce ono współpracować, przejawia bierny opór. Biorąc pod uwagę jedynie aspekty etyczne zaistniałej sytuacji:", "source": "plik Word", "answers": [{"text": "psycholog nie uzyskał przyzwolenia dziecka na badanie", "correct": false}, {"text": "psycholog mógłby zaproponować inny, bardziej dogodny termin diagnozy", "correct": false}, {"text": "być może psycholog nie zadbał o poczucie bezpieczeństwa dziecka", "correct": false}, {"text": "wszystkie powyższe odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Psycholog szkolny zasugerował rodzicom przeprowadzenie określonej diagnozy w placówce zewnętrznej oraz swoją pomoc w formie konsultacji. Rodzice nie podjęli proponowanych działań. Zachowanie rodziców:", "source": "plik Word", "answers": [{"text": "jest wyrazem braku współpracy rodziców ze szkołą", "correct": false}, {"text": "jest przejawem dobrowolności udziału w usługach psychologicznych", "correct": true}, {"text": "świadczy o braku zainteresowania dzieckiem", "correct": false}, {"text": "świadczy o braku kompetencji psychologa", "correct": false}]}, {"q": "Świadoma zgoda na udział w usłudze psychologicznej dotyczy poinformowania klienta o:", "source": "plik Word", "answers": [{"text": "kompetencjach psychologa", "correct": false}, {"text": "celu, roli, sposobie realizacji usługi psychologicznej", "correct": false}, {"text": "korzyściach i ewentualnym dyskomforcie związanym z przebiegiem usługi", "correct": false}, {"text": "wszystkie odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Społeczny obowiązek denuncjacji w odniesieniu do osoby psychologa oznacza, że psycholog:", "source": "plik Word", "answers": [{"text": "ma obowiązek zawiadomienia odpowiednich służb, jeśli dowiaduje się o popełnieniu przestępstwa ściganego z urzędu przez osobę, z którą nie jest w relacji zawodowej, wcześniej odpowiednio analizując sytuację i kierując się dobrem osób mających związek ze sprawą", "correct": true}, {"text": "ma obowiązek zawiadomienia odpowiednich służb, jeśli dowiaduje się o popełnieniu przestępstwa ściganego z urzędu przez swojego klienta", "correct": false}, {"text": "ma obowiązek zawiadomienia odpowiednich służb, jeśli dowiaduje się o popełnieniu przestępstwa ściganego z urzędu przez kogokolwiek", "correct": false}, {"text": "psycholog nie jest zwykłym obywatelem, nie zawiadamia nikogo", "correct": false}]}, {"q": "Psycholożka Zofia przez dwa lata prowadziła terapię pary, Tomka i Ewy. Dwa lata później para podejmuje decyzję o rozwodzie. Ewa powołuje Zofię na świadka w sądzie. Zofia w trakcie rozprawy przedstawia niekorzystne informacje na temat Tomka. W tej sytuacji psycholog:", "source": "plik Word", "answers": [{"text": "musi stawić się w sądzie, ale powinna odmówić składania zeznań", "correct": true}, {"text": "nie powinna stawić się w sądzie", "correct": false}, {"text": "postąpiła dobrze, zgodnie ze swoim sumieniem", "correct": false}, {"text": "postąpiła dobrze, Tomek i Ewa nie są już jej klientami", "correct": false}]}, {"q": "Rodzic dziecka uczęszczającego do przedszkola dowiaduje się, że dziecko uczestniczy w grupowych zajęciach organizowanych przez psychologa z zewnątrz:", "source": "plik Word", "answers": [{"text": "skoro rodzice podpisali na początku roku szkolnego zgodę na opiekę psychologiczno-pedagogiczną, wszystko jest w porządku", "correct": false}, {"text": "rodzice powinni mieć możliwość odmowy uczestniczenia dziecka w tej konkretnej usłudze", "correct": false}, {"text": "rodzice powinni zostać w pełni poinformowani o celach, metodach działania, kompetencjach psychologa i powinni mieć możliwość odmowy uczestniczenia dziecka w tej konkretnej usłudze", "correct": true}, {"text": "placówka nie ma możliwości organizowania indywidualnej opieki dla danego dziecka, więc wszystkie dzieci uczestniczą w organizowanych przez psychologa zajęciach", "correct": false}]}, {"q": "Ograniczenie dobrowolności udziału w usłudze psychologicznej:", "source": "plik Word", "answers": [{"text": "dotyczy dzieci do 13. roku życia, osób wyrokiem sądu pozbawionych zdolności do czynności prawnych, osób o ograniczonej zdolności rozumienia i decydowania", "correct": false}, {"text": "wiąże się z tym, że psycholog, pomimo braku obowiązku o uzyskaniu zgody na dobrowolność, poszukuje przyzwolenia klienta", "correct": false}, {"text": "psycholog musi mieć zgodę opiekuna prawnego", "correct": false}, {"text": "wszystkie odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Psycholog może wejść w związek intymny z osobą:", "source": "plik Word", "answers": [{"text": "spokrewnioną z jego/jej klientem(ką)", "correct": false}, {"text": "w przeszłości będącą jego/jej klientem(ką)", "correct": false}, {"text": "aktualnie będącą jego/jej klientem(ką), o ile klient(ka) wyraża na to zgodę", "correct": false}, {"text": "pracującą w tym samym miejscu pracy, co klient(ka)", "correct": true}]}, {"q": "Psycholog, którego klientem jest osoba 12-letnia dowiaduje się, że klient myśli i planuje samobójstwo. W tej sytuacji psycholog:", "source": "plik Word", "answers": [{"text": "ma obowiązek zawiadomienia prokuratury lub policji", "correct": false}, {"text": "ma obowiązek zawiadomienia rodziców", "correct": true}, {"text": "w żadnym wypadku nie łamie tajemnicy zawodowej", "correct": false}, {"text": "zachowuje podmiotowość klienta, uprzedza go o planowanym zawiadomieniu osób trzecich", "correct": false}]}, {"q": "Psycholog posługujący się testami psychologicznymi, np. w trakcie rekrutacji:", "source": "plik Word", "answers": [{"text": "powinien przekazać informację zwrotną najpierw przełożonemu, a potem osobie badanej", "correct": false}, {"text": "może przekazać informację o wynikach surowych osobie badanej", "correct": false}, {"text": "może przekazać informację o wynikach surowych przełożonemu", "correct": false}, {"text": "powinien przekazać informację zwrotną najpierw osobie badanej, a potem przełożonemu", "correct": true}]}, {"q": "Przy całkowitej odmowie współpracy z psychologiem osoby pozbawionej zdolności do czynności prawnych, psycholog w roli biegłego sądowego:", "source": "plik Word", "answers": [{"text": "prowadzi badanie mimo wszystko", "correct": false}, {"text": "informuje sąd o braku możliwości przygotowania opinii", "correct": true}, {"text": "przygotowuje częściową opinię, bazując na obserwacji zachowania badanego", "correct": false}, {"text": "przygotowuje częściową opinię, bazując na aktach sprawy i konsultacji z innym biegłym sądowym", "correct": false}]}, {"q": "Klientem psychologa szkolnego jest:", "source": "plik Word", "answers": [{"text": "dziecko i rodzic", "correct": false}, {"text": "dziecko, rodzic, dyrektor szkoły i nauczyciele", "correct": true}, {"text": "dyrektor szkoły", "correct": false}, {"text": "jedynie dziecko", "correct": false}]}, {"q": "Psycholog posługujący się testami psychologicznymi, np. w trakcie rekrutacji:", "source": "plik Word", "answers": [{"text": "może wyszkolić swoich współpracowników w zakresie przeprowadzania badania danym testem, aby mu pomagali", "correct": false}, {"text": "może przekazywać narzędzia psychologiczne nie-psychologom, aby jednokrotnie przeprowadzili badanie", "correct": false}, {"text": "pozwala na przeprowadzanie badania jedynie odpowiednio przeszkolonym psychologom", "correct": true}, {"text": "może przekazać narzędzia psychologiczne przełożonemu bez względu na jego wykształcenie", "correct": false}]}, {"q": "Dyrektor szkoły prosi psychologa szkolnego o rozmowę z dwójką chłopców, którzy się pobili:", "source": "plik Word", "answers": [{"text": "rolą psychologa jest wskazanie dyrektorowi sprawcy", "correct": false}, {"text": "rolą psychologa jest udzielenie wsparcia ofierze", "correct": false}, {"text": "rolą psychologa jest działanie na rzecz przeciwdziałania przemocy i udzielenie wsparcia obu chłopcom", "correct": true}, {"text": "rolą psychologa jest wezwanie rodziców na rozmowę", "correct": false}]}, {"q": "Zaznacz zdanie prawdziwe na temat etycznej postawy psychologa-praktyka w pracy z osobami dorosłymi:", "source": "plik Word", "answers": [{"text": "psycholog powinien ciągle reflektować niesymetryczność relacji z klientem", "correct": true}, {"text": "psycholog powinien stawiać bardzo sztywne granice w relacji z klientem", "correct": false}, {"text": "psycholog powinien dbać o własny dobrostan psychofizyczny, nawet kosztem klienta, ponieważ pomoże mu to zachować własną integralność", "correct": false}, {"text": "psycholog nie musi pytać o zgodę na badanie wszystkich swoich klientów (np. osoby, które nie zgłosiły się do psychologa dobrowolnie lub dzieci)", "correct": false}]}, {"q": "Do konfliktu ról dochodzi wtedy, gdy:", "source": "plik Word", "answers": [{"text": "psycholog przeprowadza badanie diagnostyczne na swoim partnerze/partnerce", "correct": false}, {"text": "psycholog przeprowadza badania diagnostyczne na swoim dziecku", "correct": false}, {"text": "psycholog otrzymuje od klienta zniżkę do sklepu, w którym klient pracuje", "correct": false}, {"text": "wszystkie odpowiedzi są prawidłowe", "correct": true}]}, {"q": "Do psychologa zgłosił się dorosły klient, którego światopogląd kłóci się ze światopoglądem psychologa. Co powinien zrobić psycholog", "source": "plik Word", "answers": [{"text": "zastanowić się, na ile ta sytuacja zakłóca proces diagnostyczny/kontakt wspierający i jeśli istotnie, przekierować klienta do specjalisty, który będzie w stanie pomóc klientowi", "correct": true}, {"text": "kontynuować proces diagnostyczny/kontakt wspierający, pomimo różnic i dyskomfortu psychologa", "correct": false}, {"text": "spróbować przekonać klienta do swoich poglądów", "correct": false}, {"text": "natychmiast zakończyć proces diagnostyczny/kontakt wspierający", "correct": false}]}, {"q": "Podczas udzielenia informacji zwrotnej z procesu diagnostycznego dorosłemu klientowi psycholog NIE musi:", "source": "plik Word", "answers": [{"text": "uwzględniać, że klient może nie chcieć poznać wyników", "correct": false}, {"text": "upewniać się, że klient jest pierwszą osobą, która pozna swoje wyniki (pierwsza może być instytucja zlecająca)", "correct": false}, {"text": "utajniać wyników liczbowych (to zależy od sytuacji diagnostycznej i celu udostępniania wyników liczbowych)", "correct": true}, {"text": "udzielać dodatkowych wyjaśnień na temat treści opinii z badania", "correct": false}]}, {"q": "Etapem procesu diagnostycznego NIE jest:", "source": "plik Word", "answers": [{"text": "kontrakt", "correct": false}, {"text": "przeprowadzanie psychoterapii", "correct": true}, {"text": "przeprowadzenie diagnozy", "correct": false}, {"text": "udzielenie informacji zwrotnych", "correct": false}]}, {"q": "W przypadku osób niepełnoletnich sytuacja zagrożenia życia i zdrowia powoduje konieczność powiadomienia:", "source": "plik Word", "answers": [{"text": "za zgodą niepełnoletniego jego rodziców", "correct": false}, {"text": "wychowawcę i rodziców", "correct": false}, {"text": "jednego z rodziców", "correct": false}, {"text": "opiekunów prawnych", "correct": true}]}, {"q": "Obowiązek traktowania przez psychologa jednakowo każdego klienta, niezależnie od jego sytuacji społecznej i jego wieku to prawo do:", "source": "plik Word", "answers": [{"text": "prawo do poufności", "correct": false}, {"text": "prawo do wyboru", "correct": false}, {"text": "prawo do intymności", "correct": false}, {"text": "prawo do godności", "correct": true}]}, {"q": "Uzyskanie zgody klienta do udzielenia świadczeń psychologicznych jest realizacją prawa do:", "source": "plik Word", "answers": [{"text": "autonomii", "correct": true}, {"text": "wyboru", "correct": false}, {"text": "prywatności", "correct": false}, {"text": "godności", "correct": false}]}, {"q": "Według Bennett i Robinson dobrym przykładem poważnych zachowań kontrproduktywnych przeciwko firmie jest:", "source": "plik Word", "answers": [{"text": "wczesne wychodzenie z pracy", "correct": false}, {"text": "niszczenie firmowego sprzętu", "correct": true}, {"text": "plotkarstwo w miejscu pracy", "correct": false}, {"text": "okradanie współpracowników", "correct": false}]}, {"q": "Która z poniższych cech nie jest istotnym kryterium mobbingu według Leymanna:", "source": "plik Word", "answers": [{"text": "trwałość zachowań w czasie", "correct": false}, {"text": "wydalenie z pracy", "correct": true}, {"text": "powtarzalność", "correct": false}, {"text": "wrogie intencje wobec jednostki", "correct": false}]}, {"q": "Zdaniem Boduszka, psychopatów w biznesie charakteryzuje:", "source": "plik Word", "answers": [{"text": "niskie nasilenie empatii poznawczej i emocjonalnej", "correct": false}, {"text": "wysokie nasilenie manipulacji interpersonalnej i empatii emocjonalnej", "correct": false}, {"text": "wysokie nasilenie manipulacji interpersonalnej i niskie empatii poznawczej", "correct": true}, {"text": "wszystkie pozostałe odpowiedzi są nieprawdziwe", "correct": false}]}, {"q": "Zaznacz prawdziwą odpowiedź:", "source": "plik Word", "answers": [{"text": "Ofiary postrzegają częściej zachowania nieetyczne niż ich świadkowie", "correct": true}, {"text": "Zwykle konsekwencje ujawnienia negatywnych zjawisk są pozytywne dla sygnalisty", "correct": false}, {"text": "Ujawnianie informacji o zachowaniach nieetycznych na zewnątrz firmy jest rzadziej karane niż ujawnianie wewnątrz firmy", "correct": false}, {"text": "Sygnaliści najczęściej działają z pobudek finansowych", "correct": false}]}, {"q": "Psycholog dowiaduje się, że jego klient, osoba ze zdiagnozowaną chorobą psychiczną, wykorzystuje seksualnie osoby nieletnie. W tej sytuacji psycholog:", "source": "plik Word", "answers": [{"text": "powinien niezwłocznie powiadomić organy ścigania, np. policję", "correct": true}, {"text": "powinien skonsultować się z np. superwizorem zanim złamie tajemnicę zawodową", "correct": false}, {"text": "nie może złamać tajemnicy zawodowej ze względu na ustawę o ochronie zdrowia psychicznego", "correct": false}, {"text": "powinien niezwłocznie powiadomić superwizora", "correct": false}]}, {"q": "Przez sytuację złożoności ról rozumiemy:", "source": "plik Word", "answers": [{"text": "podejmowanie dodatkowych zadań w przypadku wielości podejmowanych przez psychologa ról w miejscu pracy", "correct": false}, {"text": "podejmowanie usługi psychologicznej w sytuacji, gdy psycholog jest z klientem w relacji zawodowej i jednocześnie relacji przyjacielskiej", "correct": true}, {"text": "podejmowanie zadań, które są niezgodne z zawodem psychologa", "correct": false}, {"text": "podejmowanie zadań, które wykraczają poza kompetencje psychologa", "correct": false}]}, {"q": "Dyrektor prosi psychologa szkolnego o pomoc w sytuacji dziecka z diagnozą ADHD utrudniającego prowadzenie lekcji. Rolą psychologa jest:", "source": "plik Word", "answers": [{"text": "wszystkie odpowiedzi są prawidłowe", "correct": false}, {"text": "upomnienie dziecka", "correct": false}, {"text": "wskazanie nauczycielowi wskazówek odnośnie pracy z dzieckiem z diagnozą ADHD", "correct": true}, {"text": "zaproszenie rodziców na rozmowę na temat trudnego zachowania dziecka", "correct": false}]}];
+
+let active = [];
+let current = 0;
+let score = 0;
+let locked = false;
+let results = [];
+
+function shuffle(a) {
+  return a.map(v => [Math.random(), v]).sort((x,y) => x[0]-y[0]).map(x => x[1]);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function initCounts() {
+  document.getElementById('statQuestions').textContent = DATA.length;
+  const sel = document.getElementById('count');
+  sel.innerHTML = '';
+  [10,20,30,40,50,75,DATA.length]
+    .filter((v,i,a) => v <= DATA.length && a.indexOf(v) === i)
+    .forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v === DATA.length ? 'wszystkie (' + v + ')' : v;
+      sel.appendChild(o);
+    });
+}
+
+function quickAll() {
+  document.getElementById('count').value = DATA.length;
+  startQuiz();
+}
+
+function startQuiz() {
+  const n = parseInt(document.getElementById('count').value || DATA.length);
+  active = shuffle(DATA).slice(0, n).map(q => ({...q, answers: shuffle(q.answers)}));
+  current = 0;
+  score = 0;
+  locked = false;
+  results = [];
+  showScreen('quizScreen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  locked = false;
+  const q = active[current];
+  const card = document.getElementById('questionCard');
+  const letters = ['A','B','C','D','E','F'];
+
+  document.getElementById('counterPill').textContent = 'Pytanie ' + (current + 1) + ' / ' + active.length;
+  document.getElementById('scorePill').textContent = 'Wynik: ' + score;
+  document.getElementById('progress').style.width = ((current) / active.length * 100) + '%';
+
+  card.innerHTML = '';
+  const src = document.createElement('div');
+  src.className = 'source';
+  src.textContent = 'pytanie z pliku Word';
+  card.appendChild(src);
+
+  const h = document.createElement('h2');
+  h.className = 'question-title';
+  h.textContent = q.q;
+  card.appendChild(h);
+
+  q.answers.forEach((a, idx) => {
+    const div = document.createElement('div');
+    div.className = 'answer';
+    div.innerHTML = '<div class="letter">' + letters[idx] + '</div><div class="answer-text">' + escapeHtml(a.text) + '</div>';
+    div.onclick = () => chooseAnswer(idx);
+    card.appendChild(div);
+  });
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = 'feedback';
+  card.appendChild(fb);
+
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  actions.innerHTML = `
+    <div class="left-actions">
+      <button class="report" onclick="reportQuestion()">Zgłoś pytanie</button>
+      <button class="secondary" onclick="skipQuestion()">Pomiń</button>
+    </div>
+    <div class="right-actions">
+      <button id="nextBtn" onclick="nextQuestion()" disabled>Następne</button>
+    </div>
+  `;
+  card.appendChild(actions);
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function chooseAnswer(idx) {
+  if (locked) return;
+  locked = true;
+
+  const q = active[current];
+  const answers = [...document.querySelectorAll('.answer')];
+  const chosen = q.answers[idx];
+  const correctIndex = q.answers.findIndex(a => a.correct);
+  const isCorrect = !!chosen.correct;
+
+  answers.forEach((el, i) => {
+    el.classList.add('locked');
+    if (q.answers[i].correct) el.classList.add('correct');
+  });
+  if (!isCorrect) answers[idx].classList.add('wrong');
+
+  if (isCorrect) score += 1;
+
+  results.push({
+    q: q.q,
+    ok: isCorrect,
+    chosen: chosen.text,
+    correct: q.answers[correctIndex].text
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'good' : 'bad');
+  fb.textContent = isCorrect ? 'Dobrze ✅' : 'Źle ❌ — poprawna odpowiedź jest podświetlona na zielono.';
+  document.getElementById('scorePill').textContent = 'Wynik: ' + score;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function skipQuestion() {
+  if (locked) return;
+  locked = true;
+
+  const q = active[current];
+  const answers = [...document.querySelectorAll('.answer')];
+  const correctIndex = q.answers.findIndex(a => a.correct);
+
+  answers.forEach((el, i) => {
+    el.classList.add('locked');
+    if (q.answers[i].correct) el.classList.add('correct');
+  });
+
+  results.push({
+    q: q.q,
+    ok: false,
+    chosen: 'Pominięto',
+    correct: q.answers[correctIndex].text
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback bad';
+  fb.textContent = 'Pominięte — poprawna odpowiedź jest podświetlona na zielono.';
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  if (current < active.length - 1) {
+    current += 1;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function getGitHubIssueUrl(q) {
+  const host = window.location.hostname;
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+
+  let owner = '';
+  let repo = '';
+
+  if (host.endsWith('.github.io')) {
+    owner = host.replace('.github.io', '');
+    repo = pathParts[0] || '';
+  }
+
+  const title = '[Błąd w pytaniu] ' + q.q.slice(0, 80);
+
+  const correct = q.answers.find(a => a.correct);
+  const body =
+`Zgłaszam błąd w pytaniu.
+
+**Pytanie w aktualnym zestawie:** ${current + 1} / ${active.length}
+
+**Treść pytania:**
+${q.q}
+
+**Odpowiedzi:**
+${q.answers.map((a, i) => `${String.fromCharCode(65+i)}. ${a.text}`).join('\n')}
+
+**Poprawna odpowiedź według testu:**
+${correct ? correct.text : 'brak'}
+
+**Co jest nie tak?**
+Opisz tutaj, co trzeba poprawić:
+`;
+
+  if (owner && repo) {
+    return 'https://github.com/' + owner + '/' + repo + '/issues/new?title=' +
+      encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
+  }
+
+  const fallback = 'Nie udało się automatycznie wykryć repozytorium GitHub.\n\n' +
+    'Skopiuj zgłoszenie i wklej je ręcznie w GitHub Issues:\n\n' +
+    title + '\n\n' + body;
+  alert(fallback);
+  return null;
+}
+
+function reportQuestion() {
+  const q = active[current];
+  const url = getGitHubIssueUrl(q);
+  if (url) window.open(url, '_blank');
+}
+
+function showResult() {
+  document.getElementById('progress').style.width = '100%';
+  showScreen('resultScreen');
+  const percent = active.length ? Math.round(score / active.length * 100) : 0;
+  document.getElementById('finalScore').textContent = score + ' / ' + active.length;
+  document.getElementById('finalPercent').textContent = percent + '%';
+
+  let txt = 'Dobry trening — możesz wylosować kolejny zestaw.';
+  if (percent >= 90) txt = 'Mega wynik. To już wygląda bardzo pewnie.';
+  else if (percent >= 70) txt = 'Jest dobrze. Warto powtórzyć pytania, które wpadły źle.';
+  else if (percent >= 50) txt = 'Połowa za Tobą. Jeszcze kilka rund i będzie dużo lepiej.';
+  else txt = 'To była rozgrzewka. Zrób kolejne podejście i utrwal zielone odpowiedzi.';
+  document.getElementById('resultText').textContent = txt;
+
+  const review = document.getElementById('reviewBox');
+  review.innerHTML = '<h3>Podsumowanie odpowiedzi</h3>';
+  results.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = 'review-item';
+    div.innerHTML = '<b>' + (i+1) + '. ' + escapeHtml(r.q) + '</b>' +
+      '<span class="' + (r.ok ? 'ok' : 'no') + '">' + (r.ok ? 'Dobrze' : 'Źle') + '</span><br>' +
+      '<small>Twoja odpowiedź: ' + escapeHtml(r.chosen) + '</small><br>' +
+      '<small>Poprawna: ' + escapeHtml(r.correct) + '</small>';
+    review.appendChild(div);
+  });
+}
+
+function backHome() {
+  showScreen('startScreen');
+}
+
+initCounts();
+</script>
+</body>
+</html>
